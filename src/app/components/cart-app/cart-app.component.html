@@ -1,15 +1,11 @@
-<app-navbar [cartItemNumber]="cartItems.length" (showCartEventEmitter)="onShowCart()"/>
+<app-navbar [cartItems]="cartItems" [total]="total"/>
 
 <div class="container my-3">
     <h2>Catalogo de productos App!</h2>
     <app-catalog [products]="products" 
     (addToCartEventEmitter)="onAddToCart($event)"/>
 
-    @if (showCart) {
-        <app-cart-modal [cartItems]="cartItems" 
-        (deleteCartItemEventEmitter)="onDeleteCartItem($event)"
-        (showCartEventEmitter)="onShowCart()"/>
-    }
+    <router-outlet/>
 </div>
 
 
