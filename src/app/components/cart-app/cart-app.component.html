@@ -1,0 +1,25 @@
+<app-navbar [cartItemNumber]="cartItems.length" (showCartEventEmitter)="onShowCart()"/>
+
+<div class="container my-3">
+    <h2>Catalogo de productos App!</h2>
+    <div class="row">
+        <div [className]="showCart ?'col-9' :'col'">
+            <app-catalog [products]="products" 
+            (addToCartEventEmitter)="onAddToCart($event)"/>
+        </div>
+        @if (showCart) {
+            <div class="col-3">
+                <button class="btn btn-danger btn-sm float-end" (click)="onShowCart()">X</button>
+                @if (cartItems.length > 0) {
+                    <app-cart [cartItems]="cartItems" 
+                    (deleteCartItemEventEmitter)="onDeleteCartItem($event)" 
+                    [total]="total"/>
+                }@else {
+                    <div class="alert alert-warning">El carrito está vacio.</div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+
