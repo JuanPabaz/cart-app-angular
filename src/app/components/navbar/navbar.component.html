@@ -10,7 +10,9 @@
             <a class="nav-link active" aria-current="page" href="#">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" (click)="onShowCart()">Carrito ({{cartItemNumber}})</a>
+            <a class="nav-link" 
+            [routerLink]="['/cart']"
+            [state]="{cartItems: cartItems, total: total}">Carrito ({{cartItems.length}})</a>
           </li>
         </ul>
       </div>
