@@ -9,8 +9,7 @@
                 <div class="modal-body">
                     @if (cartItems.length > 0) {
                         <app-cart [cartItems]="cartItems" 
-                        (deleteCartItemEventEmitter)="onDeleteCartItem($event)" 
-                        [total]="total"/>
+                        (deleteCartItemEventEmitter)="onDeleteCartItem($event)"/>
                     }@else {
                         <div class="alert alert-warning">El carrito está vacio.</div>
                     }

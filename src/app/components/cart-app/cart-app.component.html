@@ -7,7 +7,6 @@
 
     @if (showCart) {
         <app-cart-modal [cartItems]="cartItems" 
-        [total]="total"
         (deleteCartItemEventEmitter)="onDeleteCartItem($event)"
         (showCartEventEmitter)="onShowCart()"/>
     }
