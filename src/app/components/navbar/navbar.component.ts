@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CartItem } from '../../models/cartItem';
+import { Product } from '../../models/product';
 
 @Component({
   selector: 'app-navbar',
@@ -11,4 +12,5 @@ import { CartItem } from '../../models/cartItem';
 export class NavbarComponent {
   @Input() cartItems: CartItem[] = [];
   @Input() total: number = 0;
+  @Input() products: Product[] = [];
 }
