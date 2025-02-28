@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product';
 import { CatalogComponent } from '../catalog/catalog.component';
-import { CartComponent } from '../cart/cart.component';
 import { CartItem } from '../../models/cartItem';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { CartModalComponent } from '../cart-modal/cart-modal.component';
 
 @Component({
   selector: 'app-cart-app',
-  imports: [CatalogComponent, CartComponent, NavbarComponent],
+  imports: [CatalogComponent, NavbarComponent, CartModalComponent],
   templateUrl: './cart-app.component.html',
   styleUrl: './cart-app.component.css'
 })
