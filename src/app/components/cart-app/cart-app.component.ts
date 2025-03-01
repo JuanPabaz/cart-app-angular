@@ -4,6 +4,7 @@ import { CartItem } from '../../models/cartItem';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { Router, RouterOutlet } from '@angular/router';
 import { SharingDataService } from '../../services/sharing-data.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cart-app',
@@ -48,30 +49,54 @@ export class CartAppComponent implements OnInit{
       this.saveSession();
       this.router.navigate(['/cart'],
         {state: {cartItems: this.cartItems, total: this.total}});
+      
+      Swal.fire({
+        title: "El producto se ha añadido exitosamente",
+        icon: "success"
+      })
     })
   }
 
   onDeleteCartItem(){
     this.sharing_data_service.idProductEventEmitter.subscribe(id => {
-      const hasItem = this.cartItems.find(cartItem => cartItem.product.id === id);
-      if (hasItem && hasItem.quantity > 1){
-        this.cartItems = this.cartItems.map(cartItem => {
-          if (cartItem.product.id === id){
-            return {...cartItem, quantity: cartItem.quantity - 1};
+      
+      Swal.fire({
+        title: "Está seguro de eliminar el producto?",
+
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Eliminar",
+        cancelButtonText: "Cancelar"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const hasItem = this.cartItems.find(cartItem => cartItem.product.id === id);
+          if (hasItem && hasItem.quantity > 1){
+            this.cartItems = this.cartItems.map(cartItem => {
+              if (cartItem.product.id === id){
+                return {...cartItem, quantity: cartItem.quantity - 1};
+              }
+              return cartItem;
+            })
+          }else{
+            this.cartItems = this.cartItems.filter(cartItem => cartItem.product.id !== id);
           }
-          return cartItem;
-        })
-      }else{
-        this.cartItems = this.cartItems.filter(cartItem => cartItem.product.id !== id);
-      }
-      if (this.cartItems.length === 0){
-        sessionStorage.removeItem('cartItems');
-      }
-      this.calculateTotal();
-      this.saveSession();
-      this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-        this.router.navigate(['/cart'],
-          {state: {cartItems: this.cartItems, total: this.total}});
+          if (this.cartItems.length === 0){
+            sessionStorage.removeItem('cartItems');
+          }
+          this.calculateTotal();
+          this.saveSession();
+          this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+            this.router.navigate(['/cart'],
+              {state: {cartItems: this.cartItems, total: this.total}});
+          });
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success"
+          });
+        }
       });
     })
   }
