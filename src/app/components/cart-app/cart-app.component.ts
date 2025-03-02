@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService } from '../../services/product.service';
 import { CartItem } from '../../models/cartItem';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { Router, RouterOutlet } from '@angular/router';
 import { SharingDataService } from '../../services/sharing-data.service';
 import Swal from 'sweetalert2';
+import { itemsState } from '../../store/items.reducer';
+import { Store } from '@ngrx/store';
+import { addItemToCart, getTotal, removeFromCart } from '../../store/items.actions';
 
 @Component({
   selector: 'app-cart-app',
@@ -16,17 +18,19 @@ export class CartAppComponent implements OnInit{
   cartItems: CartItem[] = [];
   total: number = 0;
 
-  constructor(private product_service: ProductService,
+  constructor(
+    private store: Store<{items: itemsState}>,
     private sharing_data_service: SharingDataService,
     private router: Router
   ){
-
+    this.store.select('items').subscribe(state => {
+      this.cartItems = state.items,
+      this.total = state.total
+    })
   }
 
   ngOnInit(): void {
-    const storedCartItems = sessionStorage.getItem('cartItems');
-    this.cartItems = storedCartItems ? JSON.parse(storedCartItems) : [];
-    // this.calculateTotal();
+    this.store.dispatch(getTotal());
     this.onDeleteCartItem();
     this.onAddToCart();
   }
@@ -34,7 +38,8 @@ export class CartAppComponent implements OnInit{
   onAddToCart(){
     this.sharing_data_service.addToCartEventEmitter.subscribe(product => {
       
-      // this.calculateTotal();
+      this.store.dispatch(addItemToCart({product: product}));
+      this.store.dispatch(getTotal());
       this.saveSession();
       this.router.navigate(['/cart'],
         {state: {cartItems: this.cartItems, total: this.total}});
@@ -61,7 +66,8 @@ export class CartAppComponent implements OnInit{
       }).then((result) => {
         if (result.isConfirmed) {
           
-          // this.calculateTotal();
+          this.store.dispatch(removeFromCart({id: id}));
+          this.store.dispatch(getTotal());
           this.saveSession();
           this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
             this.router.navigate(['/cart'],
