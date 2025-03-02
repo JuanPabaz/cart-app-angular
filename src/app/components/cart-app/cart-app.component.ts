@@ -25,12 +25,12 @@ export class CartAppComponent implements OnInit{
   ){
     this.store.select('items').subscribe(state => {
       this.cartItems = state.items,
-      this.total = state.total
+      this.total = state.total,
+      this.saveSession();
     })
   }
 
   ngOnInit(): void {
-    this.store.dispatch(getTotal());
     this.onDeleteCartItem();
     this.onAddToCart();
   }
@@ -40,7 +40,6 @@ export class CartAppComponent implements OnInit{
       
       this.store.dispatch(addItemToCart({product: product}));
       this.store.dispatch(getTotal());
-      this.saveSession();
       this.router.navigate(['/cart'],
         {state: {cartItems: this.cartItems, total: this.total}});
       
@@ -68,7 +67,6 @@ export class CartAppComponent implements OnInit{
           
           this.store.dispatch(removeFromCart({id: id}));
           this.store.dispatch(getTotal());
-          this.saveSession();
           this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
             this.router.navigate(['/cart'],
               {state: {cartItems: this.cartItems, total: this.total}});
