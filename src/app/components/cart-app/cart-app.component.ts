@@ -16,7 +16,6 @@ import { addItemToCart, getTotal, removeFromCart } from '../../store/items.actio
 })
 export class CartAppComponent implements OnInit{
   cartItems: CartItem[] = [];
-  total: number = 0;
 
   constructor(
     private store: Store<{items: itemsState}>,
@@ -25,7 +24,6 @@ export class CartAppComponent implements OnInit{
   ){
     this.store.select('items').subscribe(state => {
       this.cartItems = state.items,
-      this.total = state.total,
       this.saveSession();
     })
   }
@@ -40,8 +38,7 @@ export class CartAppComponent implements OnInit{
       
       this.store.dispatch(addItemToCart({product: product}));
       this.store.dispatch(getTotal());
-      this.router.navigate(['/cart'],
-        {state: {cartItems: this.cartItems, total: this.total}});
+      this.router.navigate(['/cart']);
       
       Swal.fire({
         title: "El producto se ha añadido exitosamente",
@@ -67,10 +64,8 @@ export class CartAppComponent implements OnInit{
           
           this.store.dispatch(removeFromCart({id: id}));
           this.store.dispatch(getTotal());
-          this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-            this.router.navigate(['/cart'],
-              {state: {cartItems: this.cartItems, total: this.total}});
-          });
+          this.router.navigate(['/cart']);
+          
           Swal.fire({
             title: "Deleted!",
             text: "Your file has been deleted.",
