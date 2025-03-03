@@ -12,5 +12,5 @@ export const productsInitialState: products = {
 export const productReducer = createReducer(
     productsInitialState,
     on(loadProducts, (state) => ({products: [...state.products]})),
-    on(loadAllProducts, (state, payload) => ({products: [...payload.products]}))
+    on(loadAllProducts, (state, {products}) => ({products: [...products]}))
 )
