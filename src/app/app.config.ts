@@ -8,6 +8,7 @@ import { cartItemsReducer } from './store/items.reducer';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { productReducer } from './store/product.reducer';
 import { provideEffects } from '@ngrx/effects';
+import { ProductsEffects } from './store/effects/product.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }),
@@ -18,5 +19,5 @@ export const appConfig: ApplicationConfig = {
         products: productReducer
     }), 
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }), 
-    provideEffects()]
+    provideEffects(ProductsEffects)]
 };
