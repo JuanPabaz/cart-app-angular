@@ -5,6 +5,9 @@ import { SharingDataService } from '../../services/sharing-data.service';
 import { Store } from '@ngrx/store';
 import { loadProducts } from '../../store/product.actions';
 import { products } from '../../store/product.reducer';
+import { addItemToCart, getTotal } from '../../store/items.actions';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-catalog',
@@ -17,7 +20,7 @@ export class CatalogComponent implements OnInit{
   
   constructor(
     private store: Store<{products: products}>,
-    private sharing_data_service: SharingDataService
+    private router: Router
   ){
     this.store.select('products').subscribe(state => {
       this.products = state.products;
@@ -29,7 +32,14 @@ export class CatalogComponent implements OnInit{
   }
 
   onAddToCart(product: Product){
-    this.sharing_data_service.addToCartEventEmitter.emit(product)
+    this.store.dispatch(addItemToCart({product: product}));
+    this.store.dispatch(getTotal());
+    this.router.navigate(['/cart']);
+          
+    Swal.fire({
+      title: "El producto se ha añadido exitosamente",
+      icon: "success"
+    })
   }
 
 

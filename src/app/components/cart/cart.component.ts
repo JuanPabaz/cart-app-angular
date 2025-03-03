@@ -3,7 +3,8 @@ import { CartItem } from '../../models/cartItem';
 import { SharingDataService } from '../../services/sharing-data.service';
 import { Store } from '@ngrx/store';
 import { itemsState } from '../../store/items.reducer';
-import { getTotal } from '../../store/items.actions';
+import { getTotal, removeFromCart } from '../../store/items.actions';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cart',
@@ -30,8 +31,28 @@ export class CartComponent implements OnInit{
   }
 
   onDeleteCartItem(id:number){
-    this.sharing_data_service.idProductEventEmitter.emit(id);
-  }
+    Swal.fire({
+      title: "Está seguro de eliminar el producto?",
 
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Eliminar",
+      cancelButtonText: "Cancelar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        
+        this.store.dispatch(removeFromCart({id: id}));
+        this.store.dispatch(getTotal());
+        
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success"
+        });
+      }
+    });
+  }
   
 }
