@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store";
-import { loadProducts } from "./product.actions";
+import { loadAllProducts, loadProducts } from "./product.actions";
 import { Product } from "../models/product";
 
 export interface products {
@@ -11,5 +11,6 @@ export const productsInitialState: products = {
 
 export const productReducer = createReducer(
     productsInitialState,
-    on(loadProducts, (state, payload) => ({products: [...payload.products]}))
+    on(loadProducts, (state) => ({products: [...state.products]})),
+    on(loadAllProducts, (state, payload) => ({products: [...payload.products]}))
 )

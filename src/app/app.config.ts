@@ -16,5 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideStore({
         items: cartItemsReducer,
         products: productReducer
-    }), provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }), provideEffects()]
+    }), 
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }), 
+    provideEffects()]
 };
