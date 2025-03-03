@@ -1,6 +1,5 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CartItem } from '../../models/cartItem';
-import { SharingDataService } from '../../services/sharing-data.service';
 import { Store } from '@ngrx/store';
 import { itemsState } from '../../store/items.reducer';
 import { getTotal, removeFromCart } from '../../store/items.actions';
@@ -17,8 +16,7 @@ export class CartComponent implements OnInit{
   total: number = 0;
 
   constructor(
-    private store: Store<{items: itemsState}>,
-    private sharing_data_service: SharingDataService)
+    private store: Store<{items: itemsState}>)
     {
       store.select('items').subscribe(state => {
         this.cartItems = state.items;

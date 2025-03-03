@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../../models/product';
 import { ProductCardComponent } from '../product-card/product-card.component';
-import { SharingDataService } from '../../services/sharing-data.service';
 import { Store } from '@ngrx/store';
 import { loadProducts } from '../../store/product.actions';
 import { products } from '../../store/product.reducer';
