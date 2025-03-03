@@ -6,12 +6,14 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { provideStore } from '@ngrx/store';
 import { cartItemsReducer } from './store/items.reducer';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { productReducer } from './store/product.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
     provideStore({
-        items: cartItemsReducer
+        items: cartItemsReducer,
+        products: productReducer
     }), provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })]
 };
